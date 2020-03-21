@@ -1,0 +1,57 @@
+service: aws-kafka-topic
+plugins:
+frameworkVersion: ^=1.27.0
+provider:
+  name: aws
+  runtime: python3.6
+  memorySize: 1024
+  timeout: 120
+  stage: "${opt:stage, 'dev'}"
+  region: "${opt:region, env:AWS_DEFAULT_REGION, 'us-east-1'}"
+  environment:
+    DYNAMO_DB_NAME: 'aws-kafka-topic-table'
+    STAGE: "${self:provider.stage}"
+    PROFILE_NAME: "${self:custom.profile.${self:provider.stage}, 'nonprod'}"
+    SERVERLESS_STAGE: "${self:provider.stage}"
+    SERVERLESS_PROJECT: aws-kafka-topic
+    REGION: "${self:provider.region}"
+  tags:
+    service: aws-kafka-topic
+functions:
+  kafkaTopic:
+    handler: src/kafka-topic/index.handler
+    role: syncManagerRole
+custom:
+  profile:
+    dev: nonprod
+    preprod: preprod
+    prod: prod
+  stages:
+    - dev
+    - preprod
+    - prod
+resources:
+  Resources:
+    syncManagerRole:
+      Type: AWS::IAM::Role
+      Properties:
+        RoleName: ${self:provider.region}-${self:provider.stage}-sync-manager-role
+        AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service:
+                  - "lambda.amazonaws.com"
+              Action: sts:AssumeRole
+        ManagedPolicyArns:
+          - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        Policies:
+          - PolicyName: acm-policy
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - "dynamodb:GetItem"
+                  Resource: "*"

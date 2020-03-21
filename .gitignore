@@ -1,0 +1,22 @@
+# log files and directories
+logs
+*.log
+
+# package directories
+node_modules
+
+# build directories
+.build
+.serverless
+
+# Editor backup files
+*.bak
+*~
+
+# IDE files
+## IntelliJ IDEA
+.vscode
+.idea
+*.iws
+*.iml
+*.ipr

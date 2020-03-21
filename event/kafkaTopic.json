@@ -1,0 +1,5 @@
+{
+    "kfk_server": "localhost:9092",
+    "topic_name": "myTopic",
+    "student_id": "44"
+}
