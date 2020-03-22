@@ -19,7 +19,7 @@ provider:
 functions:
   kafkaTopic:
     handler: src/kafka-topic/index.handler
-    role: syncManagerRole
+    role: kafkaTopicRole
 custom:
   profile:
     dev: nonprod
@@ -31,7 +31,7 @@ custom:
     - prod
 resources:
   Resources:
-    syncManagerRole:
+    kafkaTopicRole:
       Type: AWS::IAM::Role
       Properties:
         RoleName: ${self:provider.region}-${self:provider.stage}-sync-manager-role
