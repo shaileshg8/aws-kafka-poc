@@ -4,6 +4,7 @@
   "description": "A sample project to demonstrate aws and apacche kafka",
   "main": "index.js",
   "scripts": {
+    "prepare": "pip install -t src/vendor -r ./requirements.txt",
     "deploy": "./node_modules/.bin/sls deploy -s dev",
     "invoke": "./node_modules/.bin/sls invoke -s dev -f kafkaTopic -p event/kafkaTopic.json",
     "remove": "./node_modules/.bin/sls remove -s dev"
@@ -12,7 +13,6 @@
   "license": "ISC",
   "dependencies": {},
   "devDependencies": {
-    "serverless": "^1.47.0",
-    "serverless-python-requirements": "^4.3.0"
+    "serverless": "^1.47.0"
   }
 }

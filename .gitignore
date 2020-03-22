@@ -20,3 +20,5 @@ node_modules
 *.iws
 *.iml
 *.ipr
+
+src/vendor

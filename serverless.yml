@@ -1,5 +1,4 @@
 service: aws-kafka-topic
-plugins:
 frameworkVersion: ^=1.27.0
 provider:
   name: aws
@@ -9,7 +8,7 @@ provider:
   stage: "${opt:stage, 'dev'}"
   region: "${opt:region, env:AWS_DEFAULT_REGION, 'us-east-1'}"
   environment:
-    DYNAMO_DB_NAME: 'aws-kafka-topic-table'
+    DYNAMO_DB_NAME: ${file(./config.yml):dynamo_db_table_name}
     STAGE: "${self:provider.stage}"
     PROFILE_NAME: "${self:custom.profile.${self:provider.stage}, 'nonprod'}"
     SERVERLESS_STAGE: "${self:provider.stage}"
